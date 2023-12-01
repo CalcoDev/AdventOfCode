@@ -11,6 +11,7 @@ myself, but I yes.
 ## Usage
 
 All exercises follow the naming convention `d{day_number}-{problem_name}.rs`.
+All inputs follow the naming convention `inputs/d{day_number}-{problem-name}`.
 
 ### With the Runner Utility
 
