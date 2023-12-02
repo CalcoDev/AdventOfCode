@@ -81,6 +81,34 @@ fn part1() {
     println!("{}", sum);
 }
 
+fn part2() {
+    let input = fs::read_to_string("inputs/d02-cube-conundrum")
+        .expect("ERROR: Couldn't read input!");
+
+    let games = parse_input(&input);
+    let power_sum = games.iter().fold(0, |sum, game| {
+        let mut max_red = 0;
+        let mut max_green = 0;
+        let mut max_blue = 0;
+        
+        for set in game.sets.iter() {
+            if set.red > max_red {
+                max_red = set.red;
+            }
+            if set.green > max_green {
+                max_green = set.green;
+            }
+            if set.blue > max_blue {
+                max_blue = set.blue;
+            }
+        }
+
+        sum + (max_red * max_green * max_blue)
+    });
+    
+    println!("{}", power_sum);
+}
+
 fn main() {
-    part1();
+    part2();
 }
