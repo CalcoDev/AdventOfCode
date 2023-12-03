@@ -59,16 +59,18 @@ fn part1() {
     }
     nums.sort();
     let all_sum: u32 = nums.iter().sum();
+    let mut ratio_sum: u32 = 0;
 
-    let mut check: Vec<bool> = vec![false; width * height];
 
     let mut s_idx = 0;
     while let Some(mut idx) = input.as_str()[s_idx..].find(is_valid_char) {
         idx += s_idx;
         s_idx = idx + 1;
 
+        let mut check: Vec<bool> = vec![false; width * height];
         let (x, y) = get_coords_idx(idx, width);
 
+        let mut gear_nums: Vec<u32> = Vec::new();
         for y_off in -1i32..2i32 {
             for x_off in -1i32..2i32 {
                 if x as i32 + x_off < 0 ||
@@ -83,15 +85,14 @@ fn part1() {
                     ((y as i32) + y_off) as usize,
                     width
                 );
+                
                 if check[idx] {
                     continue;
                 }
 
-                let calc_x = ((x as i32) + x_off) as usize; 
-                let calc_y = ((y as i32) + y_off) as usize;
-                
                 if (input.as_bytes()[idx] as char).is_numeric() {
                     let (num, l, r) = read_num(input.as_str(), idx);
+                    gear_nums.push(num);
                     if let Ok(idx) = nums.binary_search(&num) {
                         nums.remove(idx);
                         for i in l..r {
@@ -101,15 +102,21 @@ fn part1() {
                 }
             }
         }
+
+        println!("CHAR: {}:\n{:?}", input.as_bytes()[idx] as char, gear_nums);
+        if input.as_bytes()[idx] == b'*' && gear_nums.len() == 2 {
+            println!("{:?}", gear_nums);
+            ratio_sum += gear_nums[0] * gear_nums[1];
+        }
     }
 
     let diff: u32 = nums.iter().sum();
     let sum = all_sum - diff;
-    println!("{}", sum);
+    println!("Sum: {}", sum);
+    println!("Ratio Sum: {}", ratio_sum);
 
     eprintln!("all {} sum {} vec {:?}", all_sum, sum, nums);
-
-    panic!();
+    // panic!();
 }
 
 fn main() {
